@@ -1,6 +1,15 @@
+using ContactService.DataAccess.Core;
+using ContactService.DataAccess.Core.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.Configure<DatabaseSettings>(
+        builder.Configuration.GetSection("MongoConnection"));
+
+builder.Services.AddSingleton<MongoDBContext>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
