@@ -9,17 +9,19 @@ namespace ContactService.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class ContactsController : ControllerBase
+    public class ContactsDetailsController : ControllerBase
     {
 
         private readonly ILogger<ContactsController> _logger;
         private readonly IMapper _mapper;
+        private readonly IContactDetailsManager _contactDetailsManager;
         private readonly IContactManager _contactManager;
 
-        public ContactsController(ILogger<ContactsController> logger, IMapper mapper, IContactManager contactManager)
+        public ContactsDetailsController(ILogger<ContactsController> logger, IMapper mapper, IContactDetailsManager contactDetailsManager,IContactManager contactManager )
         {
             _logger = logger;
             this._mapper = mapper;
+            this._contactDetailsManager = contactDetailsManager;
             this._contactManager = contactManager;
         }
 
@@ -30,10 +32,18 @@ namespace ContactService.Controllers
         /// <param name="contactDto"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> AddAsync(ContactDto contactDto)
+        public async Task<IActionResult> AddAsync(ContactDetailsDto contactDto)
         {
-            var contact = _mapper.Map<Contact>(contactDto);
-            var result = await _contactManager.Add(contact);
+            //Check ContactId is Exist 
+            var isExist = await _contactManager.IsExist(contactDto.ContactId);
+
+            if (!isExist.IsSuccess || !isExist.Data)
+            {
+                return BadRequest(isExist);
+            }
+
+            var contact = _mapper.Map<ContactDetails>(contactDto);
+            var result = await _contactDetailsManager.Add(contact);
             if (result.IsSuccess)
             {
                 return Ok(result);
@@ -42,14 +52,14 @@ namespace ContactService.Controllers
 
         }
         /// <summary>
-        /// Get only contact
+        /// Get only contactDetail
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            var result = await _contactManager.Get(id);
+            var result = await _contactDetailsManager.Get(id);
             if (result.IsSuccess)
             {
                 return Ok(result);
@@ -59,13 +69,13 @@ namespace ContactService.Controllers
         }
 
         /// <summary>
-        /// Get All contact list.
+        /// Get All contactDetail list.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public IActionResult GetAll()
         {
-            var result = _contactManager.GetAll();
+            var result = _contactDetailsManager.GetAll();
             if (result.IsSuccess)
             {
                 return Ok(result);
@@ -75,14 +85,14 @@ namespace ContactService.Controllers
         }
 
         /// <summary>
-        /// Delete contact with details
+        /// Delete contactDetail
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(string id)
         {
-            var result = await _contactManager.Delete(id);
+            var result = await _contactDetailsManager.Delete(id);
 
             if (result.IsSuccess)
             {
