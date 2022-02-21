@@ -9,5 +9,6 @@ namespace ContactService.Business.ContactDetailsService
         Task<IResultModel> Delete(string id);
         Task<IResultModel> Get(string id);
         IResultModel GetAll();
+        IResultModel<IQueryable<ContactDetails>> GetListByContactId(string id);
     }
 }

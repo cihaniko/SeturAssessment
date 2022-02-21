@@ -8,7 +8,7 @@ namespace ContactService.Business.ContactService
         Task<IResultModel> Add(Contact contact);
         Task<IResultModel> Delete(string id);
         IResultModel GetAll();
-        Task<IResultModel> Get(string id);
+        Task<IResultModel<Contact>> Get(string id);
         Task<ResultModel<bool>> IsExist(string id);
     }
 }

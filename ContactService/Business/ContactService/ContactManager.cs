@@ -1,5 +1,6 @@
 ﻿using ContactService.DataAccess.Repositories.Abstract;
 using ContactService.Entities.Concrete;
+using ContactService.Utilities.Constants;
 using ContactService.Utilities.Result;
 
 namespace ContactService.Business.ContactService
@@ -17,31 +18,31 @@ namespace ContactService.Business.ContactService
         {
             await contactDal.AddAsync(contact);
 
-            return new ResultModel() { IsSuccess = true, Message = "asd" };
+            return new ResultModel() { IsSuccess = true, Message = ResultMessages.SuccessMessage };
         }
         public async Task<IResultModel> Delete(string id)
         {
             await contactDal.DeleteAsync(id);
 
-            return new ResultModel() { IsSuccess = true, Message = "asd" };
+            return new ResultModel() { IsSuccess = true, Message = ResultMessages.SuccessMessage };
         }
         public IResultModel GetAll()
         {
-            IQueryable result = contactDal.Get();
+            IQueryable<Contact> result = contactDal.Get();
 
-            return new ResultModel<IQueryable>() { IsSuccess = true, Message = "asd",Data=result };
+            return new ResultModel<IQueryable<Contact>>() { IsSuccess = true, Message = ResultMessages.SuccessMessage, Data=result };
         }
-        public async Task<IResultModel> Get(string id)
+        public async Task<IResultModel<Contact>> Get(string id)
         {
             Contact result = await contactDal.GetByIdAsync(id);
 
-            return new ResultModel<Contact>() { IsSuccess = true, Message = "asd" ,Data=result};
+            return new ResultModel<Contact>() { IsSuccess = true, Message = ResultMessages.SuccessMessage, Data=result};
         }
         public async Task<ResultModel<bool>> IsExist(string id)
         {
             var result = await contactDal.IsExistAsync(id);
             
-            return new ResultModel<bool>() { IsSuccess = true, Message = "asd", Data = result };
+            return new ResultModel<bool>() { IsSuccess = true, Message = ResultMessages.SuccessMessage, Data = result };
         }
     }
 }

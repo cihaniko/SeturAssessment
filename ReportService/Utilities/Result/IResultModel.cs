@@ -1,4 +1,4 @@
-﻿namespace ContactService.Utilities.Result
+﻿namespace ReportService.Utilities.Result
 {
     public interface IResultModel
     {
