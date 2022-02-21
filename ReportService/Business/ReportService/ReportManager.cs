@@ -16,9 +16,9 @@ namespace ReportService.Business.ReportService
             this._reportDal = reportDal;
         }
 
-        public async Task<ResultModel<List<Report>>> StatisticReportByAllLocation()
+        public async Task<ResultModel<List<ReportDto>>> StatisticReportByAllLocation()
         {
-            List<Report> reportList = new List<Report>();
+            List<ReportDto> reportList = new List<ReportDto>();
 
             using var client = new HttpClient();
             var response = await client.GetAsync("https://localhost:7045/api/ContactsDetails/GetAll");
@@ -32,7 +32,7 @@ namespace ReportService.Business.ReportService
 
             if (!result.IsSuccess)
             {
-                return new ResultModel<List<Report>>() { IsSuccess = true, Message = ResultMessages.SuccessMessage, Data = reportList };
+                return new ResultModel<List<ReportDto>>() { IsSuccess = true, Message = ResultMessages.SuccessMessage, Data = reportList };
 
             }
 
@@ -45,7 +45,7 @@ namespace ReportService.Business.ReportService
             {
                 var phoneCount = locationGroup.ToList().Where(s => !string.IsNullOrEmpty(s.Telephone)).DistinctBy(d => d.Telephone).Count();
                 var contactCount = locationGroup.ToList().DistinctBy(d => d.ContactId).Count();
-                var report = new Report
+                var report = new ReportDto
                 {
                     Location = locationGroup.Key,
                     ContactCount = contactCount,
@@ -54,7 +54,7 @@ namespace ReportService.Business.ReportService
                 reportList.Add(report);
             }
 
-            return new ResultModel<List<Report>>() { IsSuccess = true, Message = ResultMessages.SuccessMessage, Data = reportList };
+            return new ResultModel<List<ReportDto>>() { IsSuccess = true, Message = ResultMessages.SuccessMessage, Data = reportList };
         }
 
     }

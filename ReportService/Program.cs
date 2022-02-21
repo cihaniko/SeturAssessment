@@ -20,6 +20,7 @@ builder.Services.AddSingleton<IReportManager, ReportManager>();
 builder.Services.AddSingleton<IReportDal, ReportsRepository>();
 builder.Services.AddSingleton<IReportStatusManager, ReportStatusManager>();
 builder.Services.AddSingleton<IReportStatusDal, ReportStatusRepository>();
+builder.Services.AddSingleton<IRabbitMqProducerHelper, RabbitMqProducerHelper>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

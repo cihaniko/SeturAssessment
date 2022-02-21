@@ -1,7 +1,9 @@
 ﻿using ReportService.DataAccess.Repositories.Abstract;
 using ReportService.Entities.Concrete;
+using ReportService.Entities.Dto;
 using ReportService.Utilities.Constants;
 using ReportService.Utilities.Result;
+using System.Text.Json;
 
 namespace ReportService.Business.ReportStatusService
 {
@@ -27,14 +29,19 @@ namespace ReportService.Business.ReportStatusService
 
             return new ResultModel() { IsSuccess = true, Message = ResultMessages.SuccessMessage };
         }
-        public async Task<IResultModel<ReportStatus>> Get(string id)
+        public async Task<IResultModel<ReportDetail>> Get(string id)
         {
             ReportStatus result = await _reportStatusDal.GetByIdAsync(id);
+            ReportDetail detail = new ReportDetail
+            {
+                CreatedAt = result.CreatedAt,
+                Details = JsonSerializer.Deserialize<List<ReportDto>>(result.ReportDetail)
+            };
 
-            return new ResultModel<ReportStatus>() { IsSuccess = true, Message = ResultMessages.SuccessMessage, Data = result };
+            return new ResultModel<ReportDetail>() { IsSuccess = true, Message = ResultMessages.SuccessMessage, Data = detail };
         }
 
-        public IResultModel GetAllAsync()
+        public async Task<IResultModel> GetAllAsync()
         {
             IQueryable<ReportStatus> result = _reportStatusDal.Get();
 

@@ -6,6 +6,6 @@ namespace ReportService.Business.ReportService
 {
     public interface IReportManager
     {
-        Task<ResultModel<List<Report>>> StatisticReportByAllLocation();
+        Task<ResultModel<List<ReportDto>>> StatisticReportByAllLocation();
     }
 }

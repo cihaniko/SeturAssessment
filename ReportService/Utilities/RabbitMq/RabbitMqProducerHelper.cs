@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace ReportService.Utilities.RabbitMq
 {
-    public class RabbitMqProducerHelper
+    public class RabbitMqProducerHelper : IRabbitMqProducerHelper
     {
         private readonly IConfiguration _configuration;
         private readonly RabbitMqSettings _rabbitMqSettings;
