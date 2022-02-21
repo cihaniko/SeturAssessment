@@ -21,6 +21,8 @@ A simple phone book application was made by designing a structure that communica
 
 In order to use the application, it must be **run on 2 microservices.** When the applications run, the swagger page will welcome you. You can run your tests with APIs via **Swagger.**
 
+Fake records are available in the database.
+
 ## Using Technologies
 
  - .Net 6 
